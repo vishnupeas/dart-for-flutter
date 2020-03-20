@@ -40,6 +40,9 @@ class Participant extends RegisteredUser
 
   bool mentorOrNot=false;
   var interests = new List();
+  var courses = new Map();
+  int timeAvailable;
+
 
   Participant ( String name, String email) : super(name,email);
 
@@ -58,18 +61,48 @@ class Participant extends RegisteredUser
   void showMyStacks()
   {
     this.interests.forEach((interest)=>{
-      stdout.write(interest)
+      stdout.writeln(interest)
     });
   }
 
   void setMentorOrLearner()
   {
     this.mentorOrNot=true;
+    stdout.writeln("yeahhh !! You are a Mentor Now ");
   }
 
   void getMentor()
   {
     //get mentor for the list of interests
+  }
+
+  void addCourse(int course_key,int course_time)
+  {
+    //add a courses as a mentor
+    this.courses[course_key] = {};
+    this.courses[course_key][timeAvailable] = course_time;
+
+  }
+
+  void removeCourses(int course_key)
+  {
+    //remove a course that you are mentoring
+    if (this.courses.containsKey(course_key)!=false)
+    {
+      this.courses.remove(course_key);
+      stdout.writeln("The course has been removed");
+      showCourses();
+    }
+    else
+    {
+      stdout.writeln("You don't have a course of that Key");
+    }
+  }
+
+  void showCourses()
+  {
+    //get the list of courses that you are mentoring
+    stdout.writeln(courses.keys);
   }
   
 }
@@ -80,7 +113,7 @@ class Participant extends RegisteredUser
 
 void main()
 {
-  int m,y_n,mentorOrNot,main_option;
+  int m,y_n,mentorOrNot,main_option,course,time;
   String topic,name,email;
   
   var registeredUsers = new List();
@@ -143,7 +176,7 @@ When not working, I crossfit, surf a little, geekout in our awesome local dev co
   // Main Part of the program on what You would Like to
   while(main_option!=7)
   {
-    stdout.writeln("What would you like to do?\n1.Add Interests\n2.Remove Interests\n3.show my interests\n4.See Your Mentors\n5.Apply As a Mentor\n6.Add a Course\n7.Remove a Course\n8.Exit");
+    stdout.writeln("What would you like to do?\n1.Add Interests\n2.Remove Interests\n3.show my interests\n4.See Your Mentors\n5.Apply As a Mentor\n6.Add a Course\n7.Remove a Course\n8.Show current Courses\n9.Exit");
     stdout.write("Enter Your option : ");
     main_option = int.parse(stdin.readLineSync());
     stdout.writeln();
@@ -152,7 +185,7 @@ When not working, I crossfit, surf a little, geekout in our awesome local dev co
     {
       case 1:
           //add Interests
-          stdout.writeln("Your option Given Are");
+          stdout.writeln("Your options Given Are");
           p1.showStacks(interestList);
           stdout.write("Enter Your option : ");
           p1.addStacks(int.parse(stdin.readLineSync()));
@@ -169,50 +202,61 @@ When not working, I crossfit, surf a little, geekout in our awesome local dev co
           p1.showMyStacks();
           break;
       case 4:
-      //See Mentors
+          //See Mentors
       case 5:
-      //Apply as a mentor
+          //Apply as a mentor
+          p1.setMentorOrLearner();
+          break;
       case 6:
-      //Add courses As a mentor
+          //Add courses As a mentor
+          if(p1.mentorOrNot==true)
+          {
+            stdout.writeln("Your options Given Are");
+            p1.showStacks(interestList);
+            stdout.write("Enter Your option for the Course : ");
+            course = int.parse(stdin.readLineSync());
+            stdout.write("Enter Your available time for this course (in Hrs) : ");
+            time = int.parse(stdin.readLineSync());
+            p1.addCourse(course,time);
+          }
+          else
+          {
+            stdout.writeln("You are not a mentor , sorry!!!!");
+          }
+          break;
       case 7:
-      //Remove Courses as a mentor
+          //Remove Courses as a mentor
+          if(p1.mentorOrNot==true)
+          {
+            stdout.writeln("Courses that You have already : ");
+            p1.showCourses();
+            stdout.write("Enter the key of the Course to be removed : ");
+            p1.removeCourses(int.parse(stdin.readLineSync()));
+
+          }
+          else
+          {
+            stdout.writeln("You are not a mentor , sorry!!!!");
+          }
+          break;
       case 8:
-      //Exit from this loop
-      exit(0);
+          //show the courses
+          if(p1.mentorOrNot==true)
+          {
+            p1.showCourses();
+          }
+          else
+          {
+            stdout.writeln("You are not a mentor , sorry!!!!");
+          }
+          break;
+      default:
+          //Exit from this loop
+          exit(0);
     }
 
     print("\n\n");
 
   }
 
-
-
-
-  
-  // stdout.writeln("Are You a Mentor or not?\n1.Yes\t2.No");
-  // m = int.parse(stdin.readLineSync());
-  
-  // stdout.writeln("Enter Your Name : \n");
-  // name = stdin.readLineSync();
-  
-  // stdout.writeln("Add a topics of your interest");
-  // topic = stdin.readLineSync();
-  
-  
-  
-  // stdout.writeln("Add a topics of your interest");
-  // topic = stdin.readLineSync();
-
-  // stdout.writeln("Add a topics of your interest");
-  // do{
-
-
-
-  //   stdout.writeln("Are Done adding?\n1.Yes\t2.No");
-  //   y_n = int.parse(stdin.readLineSync());
-
-  // }while(y_n!=2)
-  
 }
-
- 
